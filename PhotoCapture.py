@@ -53,7 +53,7 @@ if img_file_buffer is not None:
         base64_image = encode_image(cropped_image_path)
 
         # Generate the response
-        response = openai.ChatCompletion.create(
+        response = openai.chat.completions.create(
             model="gpt-4o",
             messages=[
                 {
