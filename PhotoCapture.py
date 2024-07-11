@@ -50,37 +50,4 @@ if img_file_buffer is not None:
         st.success(f"Cropped image saved as {cropped_image_path}")
 
         # Encode the image
-        base64_image = encode_image(cropped_image_path)
-
-        # Generate the response
-        response = openai.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {
-                    "role": "system",
-                    "content": (
-                        "You are an expert in Physics, Mathematics, and Chemistry. Answer the following question by determining the subject first. "
-                        "If the question is related to Physics, respond as Phys, an expert in Physics. If the question is related to Mathematics, respond as Math, an expert in Mathematics. "
-                        "If the question is related to Biology, respond as Bio, an expert in Biology. If the question is related to Chemistry, respond as Chem, an expert in Chemistry. "
-                        "Ensure that explanations are thorough, detailed, and easy to understand. If the question is not related to these subjects, respond with I don't know. "
-                        "Consider the following: - Use clear and concise language. - Break down complex concepts into simpler steps. - Provide examples where possible. "
-                        "- Use relevant formulas, equations, and scientific principles. - If the question is ambiguous, ask for clarification."
-                    )
-                },
-                {
-                    "role": "user",
-                    "content": "Solve the question?"
-                },
-                {
-                    "role": "user",
-                    "content": f"data:image/png;base64,{base64_image}"
-                }
-            ],
-            temperature=0.0,
-        )
-
-        # Get the response content
-        response_content = response['choices'][0]['message']['content']
-
-        # Display the response content as Markdown for LaTeX rendering
-        st.markdown(response_content)
+        
