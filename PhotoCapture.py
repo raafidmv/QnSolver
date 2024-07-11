@@ -4,11 +4,10 @@ from PIL import Image
 import numpy as np
 from streamlit_cropper import st_cropper
 import base64
-from openai import OpenAI
+import openai
 import os
 
 # Set the OpenAI API key
-os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
 
 # Helper functions
 def opencv_to_pil(image):
@@ -35,7 +34,7 @@ if img_file_buffer is not None:
 
     # Provide cropping functionality
     st.write("Crop the image")
-    cropped_image = st_cropper(opencv_to_pil(image), aspect_ratio=None)
+    cropped_image = st_cropper(opencv_to_pil(image))
 
     # Convert cropped image back to OpenCV format
     cropped_image = pil_to_opencv(cropped_image)
@@ -53,11 +52,8 @@ if img_file_buffer is not None:
         # Encode the image
         base64_image = encode_image(cropped_image_path)
 
-        # Create the OpenAI client
-        client = OpenAI()
-
         # Generate the response
-        response = client.chat_completions.create(
+        response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[
                 {
@@ -73,17 +69,20 @@ if img_file_buffer is not None:
                 },
                 {
                     "role": "user",
-                    "content": [
-                        {"type": "text", "text": "Solve the question?"},
-                        {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{base64_image}"}}
-                    ]
+                    "content": "Solve the question?",
+                    "type": "text"
+                },
+                {
+                    "role": "user",
+                    "content": f"data:image/png;base64,{base64_image}",
+                    "type": "image"
                 }
             ],
             temperature=0.0,
         )
 
         # Get the response content
-        response_content = response.choices[0].message.content
+        response_content = response.choices[0].message['content']
 
         # Display the response content as Markdown for LaTeX rendering
         st.markdown(response_content)
