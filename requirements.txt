@@ -1,6 +1,6 @@
-streamlit
-opencv-python-headless
-Pillow
-numpy
+streamlit==1.36.0
+streamlit-cropper==0.2.2
+pillow==10.4.0
+numpy==2.0.0
 openai==0.28.0
-streamlit_cropper
+opencv-python==4.10.0.84
