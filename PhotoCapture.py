@@ -8,7 +8,6 @@ import openai
 import os
 
 # Set the OpenAI API key
-openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 # Helper functions
 def opencv_to_pil(image):
