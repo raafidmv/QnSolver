@@ -8,7 +8,7 @@ import openai
 import os
 
 # Set the OpenAI API key
-
+os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 # Helper functions
 def opencv_to_pil(image):
     return Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
