@@ -2,5 +2,5 @@ streamlit
 opencv-python-headless
 Pillow
 numpy
-openai
+openai==0.28.0
 streamlit_cropper
