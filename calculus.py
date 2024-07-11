@@ -1,13 +1,10 @@
 import streamlit as st
 import base64
-# import openai
+import openai
 import os
-from openai import OpenAI
-# Set OpenAI API key
-# os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
-openai.api_key = st.secrets["openai"]["api_key"]
 
-client = OpenAI()
+# Set OpenAI API key
+openai.api_key = st.secrets["openai"]["api_key"]
 
 # Function to encode image as a base64 string
 def encode_image(image_file):
@@ -24,12 +21,11 @@ if uploaded_image:
     # Show the uploaded image
     st.image(uploaded_image, caption="Uploaded Image", use_column_width=True)
 
-    # Create the OpenAI client
-    # openai.api_key = os.getenv("OPENAI_API_KEY")
+    # Define the model to be used
     MODEL = "gpt-4o"
 
     # Generate the response
-    response = client.chat.completions.create(
+    response = openai.ChatCompletion.create(
         model=MODEL,
         messages=[
             {
@@ -44,7 +40,7 @@ if uploaded_image:
             {
                 "role": "user",
                 "content": [
-                    {"type": "text", "text": "Print the content shown in the image, then Solve the question?"},
+                    {"type": "text", "text": "Print the content shown in the image, then solve the question?"},
                     {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{base64_image}"}}
                 ]
             }
@@ -53,8 +49,7 @@ if uploaded_image:
     )
 
     # Get the response content
-    response_content = response.choices[0].message.content
+    response_content = response['choices'][0]['message']['content']
 
-    # Display thearesponse content as Markdown for LaTeX rendering
+    # Display the response content as Markdown for LaTeX rendering
     st.markdown(response_content)
-
