@@ -8,6 +8,7 @@ import openai
 import os
 
 # Set the OpenAI API key
+openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 # Helper functions
 def opencv_to_pil(image):
@@ -54,7 +55,7 @@ if img_file_buffer is not None:
 
         # Generate the response
         response = openai.ChatCompletion.create(
-            model="gpt-4",
+            model="gpt-4o",
             messages=[
                 {
                     "role": "system",
@@ -69,20 +70,18 @@ if img_file_buffer is not None:
                 },
                 {
                     "role": "user",
-                    "content": "Solve the question?",
-                    "type": "text"
+                    "content": "Solve the question?"
                 },
                 {
                     "role": "user",
-                    "content": f"data:image/png;base64,{base64_image}",
-                    "type": "image"
+                    "content": f"data:image/png;base64,{base64_image}"
                 }
             ],
             temperature=0.0,
         )
 
         # Get the response content
-        response_content = response.choices[0].message['content']
+        response_content = response['choices'][0]['message']['content']
 
         # Display the response content as Markdown for LaTeX rendering
         st.markdown(response_content)
